@@ -1,0 +1,48 @@
+version: '3.9'
+
+# Source: https://www.metabase.com/docs/latest/installation-and-operation/running-metabase-on-docker
+
+networks:
+  db:
+
+secrets:
+   db_password:
+     file: $app_dir_secrets/db_password.txt
+   db_user:
+     file: $app_dir_secrets/db_user.txt
+
+services:
+  metabase:
+    image: metabase/metabase:latest
+    volumes:
+      - $app_dir_urandom:/dev/random:ro
+    environment:
+      MB_DB_TYPE: $app_db_type
+      MB_DB_DBNAME: $app_db_name
+      MB_DB_PORT: $app_db_port
+      MB_DB_USER_FILE: /run/secrets/db_user
+      MB_DB_PASS_FILE: /run/secrets/db_password
+      MB_DB_HOST: $app_db_host
+    networks:
+      - db
+    depends_on:
+      - postgres
+    secrets:
+      - db_password
+      - db_user
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_DB: $app_db_name
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    networks:
+      db:
+        aliases:
+          - "$app_db_host"
+    secrets:
+      - db_password
+      - db_user
+
+
