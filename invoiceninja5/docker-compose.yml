@@ -1,0 +1,113 @@
+version: '3.7'
+
+networks:
+  app:
+  db:
+
+services:
+
+  web:
+    image: nginx
+    volumes:
+      # Vhost configuration
+      #- ./config/caddy/Caddyfile:/etc/caddy/Caddyfiledocker-com
+      - ${app_dir_template}/config/nginx/in-vhost.conf:/etc/nginx/conf.d/in-vhost.conf:ro
+      - $app_dir_data:/var/www/app/public:rw
+        #depends_on:
+        #  - app
+    # Run webserver nginx on port 80
+    # Feel free to modify depending what port is already occupied
+    #ports:
+    #  - "80:80"
+    #  #- "443:443"
+    networks:
+      - app
+        #extra_hosts:
+        #  - "in5.localhost:192.168.0.124 " #host and ip
+
+  app:
+    image: invoiceninja/invoiceninja:5.5
+    environment:
+      APP_URL: $app_prot://$app_fqdn
+      APP_KEY: base64:wWabbQX7N+kRZFEmnm80YaAqPLCPAuVPqK+40Kkhnh0=
+      APP_ENV: production
+      APP_DEBUG: false
+      REQUIRE_HTTPS: false
+      API_SECRET: 
+      PHANTOMJS_PDF_GENERATION: false
+      PDF_GENERATOR: snappdf
+      TRUSTED_PROXIES: '*'
+
+      IN_USER_EMAIL: $app_admin_email
+      IN_PASSWORD: $app_admin_pass
+
+      DB_HOST: $app_db_host
+      DB_PORT: $app_db_port
+      DB_DATABASE: $app_db_name
+      DB_USERNAME: $app_db_user
+      DB_PASSWORD: $app_db_pass
+    restart: always
+    volumes:
+      #- ./config/hosts:/etc/hosts:ro
+      - $app_dir_conf:/var/www/app/storage:rw,delegated
+      - $app_dir_data:/var/www/app/public:rw,delegated
+        #depends_on:
+        #  - db
+    networks:
+      - db
+      - app
+        #extra_hosts:
+        #  - "in5.localhost:192.168.0.124 " #host and ip
+
+  db:
+    image: mariadb:latest
+#    When running on ARM64 use MariaDB instead of MySQL
+#    image: mariadb:10.4
+#    For auto DB backups comment out image and use the build block below
+#    build:
+#      context: ./config/mysql
+#ports:
+      #- "3305:3306"
+    restart: always
+      #env_file: env
+    environment:
+      MYSQL_ROOT_PASSWORD: $app_db_pass
+      MYSQL_HOST: $app_db_host
+      MYSQL_PORT: $app_db_port
+      MYSQL_DATABASE: $app_db_name
+      MYSQL_USER: $app_db_user
+      MYSQL_PASSWORD: $app_db_pass
+    volumes:
+      - $app_dir_db_data:/var/lib/mysql:rw,delegated
+
+      # remove comments for next 4 lines if you want auto sql backups
+      #- ./docker/mysql/bak:/backups:rw
+      #- ./config/mysql/backup-script:/etc/cron.daily/daily:ro
+      #- ./config/mysql/backup-script:/etc/cron.weekly/weekly:ro
+      #- ./config/mysql/backup-script:/etc/cron.monthly/monthly:ro
+    networks:
+      - db
+        #extra_hosts:
+        #  - "in5.localhost:192.168.0.124 " #host and ip
+
+  # THIS IS ONLY A VALID CONFIGURATION FOR IN 4. DO NOT USE FOR IN 5.
+  # cron:
+  #   image: invoiceninja/invoiceninja:alpine-4
+  #   volumes:
+      # - ./docker/app/public:/var/www/app/public:rw,delegated
+      # - ./docker/app/storage:/var/www/app/storage:rw,delegated
+      # - ./docker/app/public/logo:/var/www/app/public/logo:rw,delegated
+  #   entrypoint: |
+  #     /bin/sh -c 'sh -s <<EOF
+  #     trap "break;exit" SIGHUP SIGINT SIGTERM
+  #     sleep 300s
+  #     while /bin/true; do
+  #       ./artisan ninja:send-invoices
+  #       ./artisan ninja:send-reminders
+  #       sleep 1d
+  #     done
+  #     EOF'
+  #   networks:
+  #     - invoiceninja
+  #
+
