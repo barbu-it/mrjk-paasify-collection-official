@@ -1,0 +1,69 @@
+version: '3.7'
+
+x-setup:
+  run_commands:
+    - rm -rf $app_dir_plugins
+    - docker create --name akaunting-tmp $app_image_name:$app_image_version
+    - docker cp akaunting-tmp:/var/www/html/modules/. $app_dir_plugins
+    - docker rm akaunting-tmp
+
+networks:
+  db:
+
+services:
+  akaunting:
+    image: $app_image_name:$app_image_version
+      #ports:
+      #  - 8080:80
+    volumes:
+      - $app_dir_data:/var/www/html/storage
+      - $app_dir_plugins:/var/www/html/modules
+    environment:
+      - "AKAUNTING_SETUP=false"
+        #- "AKAUNTING_SETUP=false"
+        #- AKAUNTING_SETUP=$AKAUNTING_SETUP
+        #- AKAUNTING_SETUP=$app_setup
+      - APP_URL=$app_prot://$app_fqdn
+      - LOCALE=$app_locale
+      - DB_HOST=${app_db_host:-db}
+      - DB_PORT=${app_db_port:-3306}
+      - DB_NAME=$app_db_name
+      - DB_DATABASE=$app_db_name
+      - DB_USERNAME=$app_db_user
+      - DB_PASSWORD=$app_db_pass
+      - DB_PREFIX=asd_
+      - COMPANY_NAME=$app_org_name
+      - COMPANY_EMAIL=$app_user_email
+      - ADMIN_EMAIL=$app_admin_email
+      - ADMIN_PASSWORD=$app_admin_pass
+
+    depends_on:
+      - db
+    networks:
+      - db
+
+  db:
+    image: mariadb
+    volumes:
+      - $app_dir_db_data:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - db
+    environment:
+      MYSQL_ROOT_PASSWORD: $app_db_admin_pass
+      MYSQL_PORT: $app_db_port
+      MYSQL_DATABASE: $app_db_name
+      MYSQL_USER: $app_db_user
+      MYSQL_PASSWORD: $app_db_pass
+
+
+      #akaunting-update:
+      #  image: containrrr/watchtower
+      #  volumes:
+      #    - $app_docker_sock:/var/run/docker.sock
+      #  command: --cleanup akaunting db
+
+      #volumes:
+      #  akaunting-data:
+      #  akaunting-modules:
+      #  db:

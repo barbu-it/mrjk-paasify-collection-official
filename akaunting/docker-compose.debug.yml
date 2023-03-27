@@ -1,0 +1,4 @@
+services:
+  akaunting:
+    environment:
+      - APP_DEBUG=True
