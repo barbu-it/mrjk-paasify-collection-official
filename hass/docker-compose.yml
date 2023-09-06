@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  hass:
+    image: lscr.io/linuxserver/homeassistant:latest
+    environment:
+      - TZ=$app_tz
+      - DOCKER_MODS=$app_docker_mods
+    volumes:
+      - $app_dir_conf:/config
+      - $app_dir_data:/data
+      - $app_dir_logs:/logs
+      - $app_dir_share:/medias
+      - $app_dir_cache:/recordings
+

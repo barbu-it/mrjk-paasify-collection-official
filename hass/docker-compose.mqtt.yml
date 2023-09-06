@@ -1,0 +1,22 @@
+networks:
+  db:
+
+services:
+
+  hass:
+    networks:
+      db:
+
+  mqtt:
+    image: eclipse-mosquitto
+    environment:
+      - TZ=$app_tz
+    user: "${app_puid}:${app_pgid}"
+    volumes:
+      - ${app_dir_conf}/mqtt:/mosquitto/config/
+      - ${app_dir_data}/mqtt:/mosquitto/data/
+      - ${app_dir_logs}/mqtt:/mosquitto/log/
+    networks:
+      db:
+    #ports:
+    #  - 8123:8123

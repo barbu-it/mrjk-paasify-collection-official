@@ -1,0 +1,20 @@
+version: '3'
+networks:
+  db:
+
+services:
+
+  hass-configurator:
+    image: "causticlab/hass-configurator-docker:arm"
+    container_name: hass-configurator
+    restart: unless-stopped
+    ports:
+      - "3218:3218/tcp"
+    depends_on:
+      - homeassistant
+    volumes:
+      - "./configurator-config:/config"
+      - "./hass-config:/hass-config"
+    user: "${app_puid}:${app_pgid}"
+    networks:
+      db:
