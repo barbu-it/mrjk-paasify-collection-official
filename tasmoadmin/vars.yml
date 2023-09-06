@@ -1,0 +1,2 @@
+traefik_svc_port: "80"
+app_description: TasmoAdmin is an administrative platform for devices flashed with Tasmota.

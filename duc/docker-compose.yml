@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  duc-web:
+    image: mkoestler/duc-service
+    environment:
+      # example: everyday at midnight
+      - SCHEDULE=0 0 * * *
+    volumes:
+      - $app_dir_db_data:/database
+      - $app_dir_data:/scan:ro

@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  tasmoadmin:
+    image: ghcr.io/tasmoadmin/tasmoadmin:latest
+    environment:
+      - TZ=$app_tz
+    volumes:
+      - $app_dir_data:/data
