@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+
+  mqtt:
+    image: eclipse-mosquitto
+    environment:
+      - TZ=$app_tz
+    user: "${app_puid}:${app_pgid}"
+    volumes:
+      - ${app_dir_conf}:/mosquitto/config/
+      - ${app_dir_data}:/mosquitto/data/
+      - ${app_dir_logs}:/mosquitto/log/

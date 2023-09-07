@@ -1,0 +1,2 @@
+traefik_svc_port: "1883"
+app_description: MQTT is an OASIS standard messaging protocol for the Internet of Things (IoT)

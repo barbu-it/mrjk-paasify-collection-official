@@ -1,0 +1,2 @@
+traefik_svc_port: "8080"
+app_description: Freqtrade is a free and open source crypto trading bot written in Python

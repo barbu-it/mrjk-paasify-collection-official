@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  mqttx:
+    image: emqx/mqttx-web
+    environment:
+      - TZ=$app_tz
+        #volumes:
+        #  - $app_dir_conf:/config
+        #  - $app_dir_data:/data
+        #  - $app_dir_logs:/logs
+        #  - $app_dir_share:/medias
+        #  - $app_dir_cache:/recordings
+

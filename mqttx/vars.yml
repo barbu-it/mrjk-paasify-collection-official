@@ -1,0 +1,2 @@
+traefik_svc_port: "80"
+app_description: MQTT X Web is an open source MQTT 5.0 browser client and an online MQTT WebSocket client tool

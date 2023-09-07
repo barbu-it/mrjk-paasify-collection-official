@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  rotki:
+    image: freqtradeorg/freqtrade:stable
+    command: >
+      trade
+      --logfile /freqtrade/user_data/logs/freqtrade.log
+      --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
+      --config /freqtrade/user_data/config.json
+      --strategy SampleStrategy
+    environment:
+      TZ: $app_tz
+    volumes:
+      - $app_dir_data:/freqtrade/user_data
+
