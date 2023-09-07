@@ -1,0 +1,13 @@
+version: '3.6'
+
+services:
+  openproject:
+    image: openproject/community:11
+    volumes:
+      - $app_dir_db_data:/var/openproject/pgdata
+      - $app_dir_data:/var/openproject/assets
+    environment:
+      - "SECRET_KEY_BASE=$app_admin_pass"
+      - "OPENPROJECT_PASSWORD__MIN__LENGTH=6"
+
+

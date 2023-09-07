@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    volumes:
+      - "$app_dir_conf/config.json:/opt/focalboard/config.json"
+
+  db:
+    image: postgres:latest
+    volumes:
+      - $app_dir_db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: $app_product
+      POSTGRES_USER: $app_product
+      POSTGRES_PASSWORD: $app_db_pass
