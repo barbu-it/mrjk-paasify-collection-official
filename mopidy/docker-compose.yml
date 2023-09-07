@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  mopidy:
+    image: rawdlite/mopidy
+    volumes:
+      - $app_dir_conf:/root/.config/
+      - $app_dir_share:/data/music/:ro
+      - $app_dir_state:/data/playlists
+    devices:
+      - "/dev/snd:/dev/snd"

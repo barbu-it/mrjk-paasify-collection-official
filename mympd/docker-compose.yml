@@ -1,0 +1,16 @@
+version: "3.0"
+services:
+  mympd:
+    image: ghcr.io/jcorporation/mympd/mympd
+      #user: 1000:1000
+    environment:
+      - UMASK_SET=022
+      - MYMPD_SSL=false
+      - MYMPD_HTTP_PORT=80
+    volumes:
+      - $app_dir_state/mpd_socket:/run/mpd/socket
+      - $app_dir_data/workdir:/var/lib/mympd/
+      - $app_dir_data/cachedir:/var/cache/mympd/
+
+      - $app_dir_share:/music/:ro
+      - $app_dir_conf/playlists/:/playlists/:ro

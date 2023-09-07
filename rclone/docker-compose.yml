@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+
+  rclone:
+    image: rclone/rclone
+    command: >
+      rcd 
+      --rc-web-gui
+      --rc-web-gui-no-open-browser
+      --rc-addr 0.0.0.0:$app_port 
+      --rc-user ${app_admin_user:-admin}
+      --rc-pass ${app_admin_pass:-admin}
+
+    volumes:
+      - $app_dir_conf:/config/rclone
+      - $app_dir_logs:/logs
+
+      # Fuse support
+      - $app_dir_data:/data:rshared
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    devices:
+      - /dev/fuse:/dev/fuse
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_ADMIN
+
+    environment:
+      - PHP_TZ=$app_tz
+      - PUID=$app_puid
+      - PGID=$app_pgid

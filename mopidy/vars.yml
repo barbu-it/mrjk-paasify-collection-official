@@ -1,0 +1,3 @@
+app_port: 6680
+traefik_svc_port: "6680"
+app_description: Mopidy plays music from local disk, Spotify, SoundCloud, TuneIn, and more
