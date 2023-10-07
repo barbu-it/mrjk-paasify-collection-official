@@ -2,6 +2,7 @@ version: '3.8'
 services:
   hass:
     image: lscr.io/linuxserver/homeassistant:latest
+    restart: unless-stopped
     environment:
       - TZ=$app_tz
       - DOCKER_MODS=$app_docker_mods

@@ -2,6 +2,7 @@ version: '3.8'
 services:
   tasmoadmin:
     image: ghcr.io/tasmoadmin/tasmoadmin:latest
+    restart: unless-stopped
     environment:
       - TZ=$app_tz
     volumes:

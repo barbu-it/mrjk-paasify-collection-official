@@ -2,6 +2,7 @@ version: "3.3"
 services:
   rotki:
     image: freqtradeorg/freqtrade:stable
+    restart: unless-stopped
     command: >
       trade
       --logfile /freqtrade/user_data/logs/freqtrade.log

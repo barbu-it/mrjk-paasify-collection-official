@@ -3,6 +3,7 @@ version: '3'
 services:
   duc-web:
     image: mkoestler/duc-service
+    restart: unless-stopped
     environment:
       # example: everyday at midnight
       - SCHEDULE=0 0 * * *

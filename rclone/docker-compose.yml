@@ -3,6 +3,7 @@ services:
 
   rclone:
     image: rclone/rclone
+    restart: unless-stopped
     command: >
       rcd 
       --rc-web-gui

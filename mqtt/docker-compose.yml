@@ -4,6 +4,7 @@ services:
 
   mqtt:
     image: eclipse-mosquitto
+    restart: unless-stopped
     environment:
       - TZ=$app_tz
     user: "${app_puid}:${app_pgid}"

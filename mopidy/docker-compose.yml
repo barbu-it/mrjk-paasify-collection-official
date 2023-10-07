@@ -3,6 +3,7 @@ version: '3.8'
 services:
   mopidy:
     image: rawdlite/mopidy
+    restart: unless-stopped
     volumes:
       - $app_dir_conf:/root/.config/
       - $app_dir_share:/data/music/:ro

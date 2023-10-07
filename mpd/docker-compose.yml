@@ -3,6 +3,7 @@ version: '3.8'
 services:
   mpd:
     image: tobi312/rpi-mpd:alpine
+    restart: unless-stopped
     ports:
       - $app_expose_ip:6600:6600  # MPD Client
       - $app_expose_ip:8000:8000  # Stream
