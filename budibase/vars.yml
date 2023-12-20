@@ -1,0 +1,16 @@
+traefik_svc_port: "10000"
+app_description: Budibase saves teams time and energy building apps that integrate seamlessly with any workflow - coding optional.
+app_port: 10000
+
+
+
+API_ENCRYPTION_KEY: "${app_token_api:-budibase}"
+JWT_SECRET: "${app_token_jwt:-budibase}"
+MINIO_ACCESS_KEY: "${app_s3_user_name:-budibase}"
+MINIO_SECRET_KEY: "${app_s3_user_pass:-budibase}"
+COUCH_DB_PASSWORD: "${app_couchdb_user_pass:-budibase}"
+COUCH_DB_USER: "${app_couchdb_user_name:-budibase}"
+REDIS_PASSWORD: "${app_redis_user_pass:-budibase}"
+INTERNAL_API_KEY: "${app_token_api_internal:-budibase}"
+
+OFFLINE_MODE: false

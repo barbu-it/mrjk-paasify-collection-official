@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  baserow:
+    image: baserow/baserow:1.21.2
+    environment:
+      BASEROW_PUBLIC_URL: '${app_prot}://${app_fqdn}'
+        #ports:
+        #  - "80:80"
+        #  - "443:443"
+    volumes:
+      - "$app_dir_data:/baserow/data"
