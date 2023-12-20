@@ -1,0 +1,14 @@
+app_image_name: frappe/erpnext
+app_image_version: v14.44.0
+
+app_port: 8080
+
+erpnext_version: v14.44.0
+
+# Default value is `$$host` which resolves site by host. For example, if your host is `example.com`,
+# site's name should be `example.com`, or if host is `127.0.0.1` (local debugging), it should be `127.0.0.1`.
+# This variable allows to override described behavior. Let's say you create site named `mysite`
+# and do want to access it by `127.0.0.1` host. Than you would set this variable to `mysite`.
+# FRAPPE_SITE_NAME_HEADER:
+
+
