@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mpd:
+    image: tobi312/rpi-mpd:alpine
+    restart: unless-stopped
+    ports:
+      - $app_expose_ip:6600:6600  # MPD Client
+      - $app_expose_ip:8000:8000  # Stream
+    volumes:
+      - $app_dir_share:/var/lib/mpd/music:rw
+      - $app_dir_share/playlists:/var/lib/mpd/playlists:rw
+
+      - $app_dir_state:/var/lib/mpd/playlists:rw
+      - $app_dir_data:/var/lib/mpd/data:rw
+#      - $app_dir_state/mpd_socket:/run/mpd/socket
+
+      #- ./mpd.conf:/etc/mpd.conf:rw
+    devices:
+      - "/dev/snd:/dev/snd"

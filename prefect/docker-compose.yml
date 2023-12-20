@@ -1,0 +1,37 @@
+version: '3.7'
+
+networks:
+  default:
+
+services:
+
+
+  ### Prefect Server API and UI
+  server:
+    image: prefecthq/prefect:2.11.5-python3.11
+    restart: always
+    volumes:
+      - $app_dir_data:/root/.prefect
+    entrypoint: ["/opt/prefect/entrypoint.sh", "prefect", "server", "start"]
+    volumes:
+      - $app_dir_share:/share
+      - $app_dir_conf:/root/.prefect
+    environment:
+      - PREFECT_UI_URL=$app_prot://$app_fqdn/api
+      - PREFECT_API_URL=$app_prot://$app_fqdn/api
+
+      - PREFECT_SERVER_ANALYTICS_ENABLED=true
+      - EXTRA_PIP_PACKAGES=prefect-docker
+
+        #- PREFECT_UI_URL=http://127.0.0.1:4200/api
+        #- PREFECT_API_URL=http://127.0.0.1:4200/api
+      # If you want to access Prefect Server UI from anywhere other than the Docker host machine, you will need to change
+      # PREFECT_UI_URL and PREFECT_API_URL to match the external hostname/IP of the host machine. For example:
+      #- PREFECT_UI_URL=http://external-ip:4200/api
+      #- PREFECT_API_URL=http://external-ip:4200/api
+      - PREFECT_SERVER_API_HOST=0.0.0.0
+        #- PREFECT_SERVER_API_HOST=$app_fqdn
+        #profiles: ["server"]
+
+      #ports:
+      #  - 4200:4200

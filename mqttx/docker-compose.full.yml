@@ -1,0 +1,83 @@
+version: '3'
+networks:
+  db:
+
+services:
+  homeassistant:
+    #container_name: hass
+    image: homeassistant/home-assistant
+    volumes:
+      - $app_dir_conf:/config
+      - /etc/localtime:/etc/localtime:ro
+        #restart: unless-stopped
+        #network_mode: host
+    depends_on:
+      - mariadb
+      - mosquitto
+    networks:
+      db:
+
+  mariadb:
+    image: linuxserver/mariadb
+      #container_name: mariadb
+      #restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${app_db_admin_pass}"
+      MYSQL_DATABASE: $app_db_name
+      MYSQL_USER: $app_db_user
+      MYSQL_PASSWORD: "${app_db_pass}"
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - ${app_dir_db_config}_mysql:/config
+        #ports:
+        #  - "3306:3306"
+    networks:
+      db:
+
+  nodered:
+    container_name: nodered
+    image: nodered/node-red
+    ports:
+      - "1880:1880"
+    volumes:
+      - ${app_dir_db_config}_nodered:/data
+    depends_on:
+      - homeassistant
+      - mosquitto
+    environment:
+      TZ: "$app_tz"
+        #restart: unless-stopped
+    networks:
+      db:
+
+  mosquitto:
+    image: eclipse-mosquitto
+      #container_name: mosquitto
+      #restart: unless-stopped
+      #ports:
+      #  - "1883:1883"
+    volumes:
+      - "./mosquitto/config:/mosquitto/config"
+      - "./mosquitto/data:/mosquitto/data"
+      - "./mosquitto/log:/mosquitto/log"
+    environment:
+      - TZ=$app_tz
+    user: "${app_puid}:${app_pgid}"
+    networks:
+      db:
+
+  hass-configurator:
+    image: "causticlab/hass-configurator-docker:arm"
+    container_name: hass-configurator
+    restart: unless-stopped
+    ports:
+      - "3218:3218/tcp"
+    depends_on:
+      - homeassistant
+    volumes:
+      - "./configurator-config:/config"
+      - "./hass-config:/hass-config"
+    user: "${app_puid}:${app_pgid}"
+    networks:
+      db:

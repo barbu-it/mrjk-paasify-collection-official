@@ -1,0 +1,38 @@
+version: '3'
+
+services: 
+  nocodb: 
+    #depends_on: 
+    #  mysql: 
+    #    condition: service_healthy
+    environment: 
+      NC_DB: "mysql2://mysql:3306?u=${app_db_user}&p=${app_db_pass}&d=${app_db_name}"
+    image: "nocodb/nocodb:latest"
+      #ports: 
+      #  - "8080:8080"
+      #restart: always
+    volumes: 
+      - "$app_dir_data:/usr/app/data"
+
+  mysql: 
+    environment: 
+      MYSQL_DATABASE: $app_db_name
+      MYSQL_PASSWORD: $app_db_pass
+      MYSQL_ROOT_PASSWORD: $app_db_admin_pass
+      MYSQL_USER: $app_db_user
+    healthcheck: 
+      retries: 10
+      test: 
+        - CMD
+        - mysqladmin
+        - ping
+        - "-h"
+        - localhost
+      timeout: 20s
+    image: "mysql:8.0.32"
+    restart: always
+    volumes: 
+      - "$app_dir_db_data:/var/lib/mysql"
+#    below line shows how to change charset and collation
+#    uncomment it if necessary
+#    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci

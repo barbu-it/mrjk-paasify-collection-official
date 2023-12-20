@@ -1,0 +1,19 @@
+
+version: "3"
+services:
+  hydroqc2mqtt:
+    image: registry.gitlab.com/hydroqc/hydroqc2mqtt
+    restart: always
+    working_dir: /home
+    volumes:
+      - $app_dir_conf:/home
+
+    environment:
+      MQTT_USERNAME: '${mqtt_user:-}'
+      MQTT_PASSWORD: '${mqtt_passwd:-}'
+      MQTT_HOST: '${mqtt_host:-mqtt}'
+      MQTT_PORT: '${mqtt_port:-1883}'
+
+      HQ2M_CONTRACTS_0_HOME_ASSISTANT_WEBSOCKET_URL: "$hass_url"
+      HQ2M_CONTRACTS_0_HOME_ASSISTANT_TOKEN: "$hass_token"
+

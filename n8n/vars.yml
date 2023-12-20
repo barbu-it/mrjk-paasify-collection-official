@@ -1,0 +1,2 @@
+traefik_svc_port: "5678"
+app_description: Free and open fair-code licensed node based Workflow Automation Tool.

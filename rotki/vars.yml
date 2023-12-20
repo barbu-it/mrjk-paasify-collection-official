@@ -1,0 +1,2 @@
+traefik_svc_port: "80"
+app_description: Rotki is an asset management and accounting application specializing in Crypto assets and aims to also help with tax reporting

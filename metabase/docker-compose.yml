@@ -14,6 +14,7 @@ secrets:
 services:
   metabase:
     image: metabase/metabase:latest
+    restart: unless-stopped
     volumes:
       - $app_dir_urandom:/dev/random:ro
     environment:
@@ -33,6 +34,7 @@ services:
 
   postgres:
     image: postgres:latest
+    restart: unless-stopped
     environment:
       POSTGRES_USER_FILE: /run/secrets/db_user
       POSTGRES_DB: $app_db_name

@@ -1,0 +1,5 @@
+traefik_svc_port: "8123"
+homepage_name: home-assistant
+homepage_icon: home-assistant
+app_description: Open source home automation that puts local control and privacy first
+app_docker_mods: linuxserver/mods:homeassistant-hacs

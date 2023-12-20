@@ -1,0 +1,93 @@
+networks:
+  workers:
+
+services:
+  server:
+    networks:
+      default:
+      workers:
+
+  cli:
+    environment:
+      - EXTRA_PIP_PACKAGES=prefect-docker
+    volumes:
+      - $app_docker_socket:/var/run/docker.sock
+
+  worker-process1:
+    image: prefecthq/prefect:2.11.5-python3.11
+    restart: always
+    entrypoint:
+      - /opt/prefect/entrypoint.sh
+      - prefect
+      - worker
+      - start
+
+      - --pool
+      - wks1-process
+      - --work-queue 
+      - default 
+      - --type
+      - process
+
+      - --name
+      - worker-process-jzn1
+      - --install-policy
+      - if-not-present
+    environment:
+      - PREFECT_API_URL=http://server:4200/api
+    volumes:
+      - $app_dir_share:/share
+    networks:
+      workers:
+
+  ## Prefect Worker
+  worker-docker1:
+    image: prefecthq/prefect:2.11.5-python3.11
+    restart: always
+    entrypoint:
+      - /opt/prefect/entrypoint.sh
+      - prefect
+      - worker
+      - start
+
+      - --pool
+      - wks1-docker
+      - --work-queue 
+      - default 
+      - --name
+      - worker-docker-jzn1
+
+      - --type
+      - docker
+      - --install-policy
+      - if-not-present
+    environment:
+      - PREFECT_API_URL=http://server:4200/api
+    volumes:
+      - $app_dir_share:/share
+      - $app_docker_socket:/var/run/docker.sock
+        #  - $app_docker_socket:/var/run/docker.sock
+    networks:
+      workers:
+
+  ## Prefect Agent
+  worker-agent1:
+    image: prefecthq/prefect:2.11.5-python3.11
+    restart: always
+    entrypoint:
+      - /opt/prefect/entrypoint.sh
+      - prefect
+      - agent
+      - start
+      - --pool
+      - default-agent-pool
+      - --work-queue
+      - default
+    environment:
+      - PREFECT_API_URL=http://server:4200/api
+    volumes:
+      - $app_dir_share:/share
+    networks:
+      workers:
+
+

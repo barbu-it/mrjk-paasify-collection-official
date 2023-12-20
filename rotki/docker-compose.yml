@@ -1,0 +1,14 @@
+version: "3.3"
+services:
+  rotki:
+    image: rotki/rotki:latest
+    restart: unless-stopped
+    environment:
+      TZ: $app_tz
+      AUTH_USER: $app_admin_user
+      FQDN: $app_fqdn
+      ROTKI_ACCEPT_DOCKER_RISK: 1
+    volumes:
+      - $app_dir_data:/data
+      - $app_dir_logs:/logs
+

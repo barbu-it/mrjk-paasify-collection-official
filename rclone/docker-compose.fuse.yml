@@ -1,0 +1,15 @@
+services:
+  rclone:
+
+    volumes:
+      # Fuse support
+      - $app_dir_data:/data:rshared
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    devices:
+      - /dev/fuse:/dev/fuse
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_ADMIN
+

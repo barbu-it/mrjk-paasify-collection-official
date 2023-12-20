@@ -1,0 +1,24 @@
+version: '3.7'
+
+networks:
+  default:
+
+services:
+
+  ### Prefect CLI
+  cli:
+    image: prefecthq/prefect:2.11.5-python3.11
+      #entrypoint: "bash"
+    command: "sleep infinity"
+    working_dir: "/root/flows"
+    volumes:
+      - "$app_dir_conf:/root/flows"
+    environment:
+      - PREFECT_API_URL=http://server:4200/api
+#       Use PREFECT_API_KEY to use the CLI to interact with Prefect Cloud
+#     - PREFECT_API_KEY=YOUR_API_KEY
+    #profiles: ["cli"]
+    volumes:
+      - $app_dir_share:/share
+
+      

@@ -1,0 +1,5 @@
+services:
+  mopidy:
+    ports:
+      - $app_expose_ip:6600:6600
+        #   - $app_expose_ip:6680:$app_port  # Stream

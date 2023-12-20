@@ -1,0 +1,30 @@
+
+networks:
+  db:
+
+services:
+
+  server:
+    environment:
+      - PREFECT_API_DATABASE_CONNECTION_URL=postgresql+asyncpg://postgres:postgres@database:5432/prefect
+    depends_on:
+      - database
+    networks:
+      default:
+      db:
+
+  ### Prefect Database
+  database:
+    image: postgres:15.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=prefect
+    expose:
+      - 5432
+    volumes: 
+      - $app_dir_db_data:/var/lib/postgresql/data
+        #profiles: ["server"]
+    networks:
+      db:

@@ -1,0 +1,20 @@
+version: '3'
+networks:
+  db:
+
+services:
+  nodered:
+    container_name: nodered
+    image: nodered/node-red
+    ports:
+      - "1880:1880"
+    volumes:
+      - ${app_dir_db_config}_nodered:/data
+    depends_on:
+      - homeassistant
+      - mosquitto
+    environment:
+      TZ: "$app_tz"
+        #restart: unless-stopped
+    networks:
+      db:

@@ -1,0 +1,6 @@
+app_port: 3100
+
+traefik_svc_port: "3100"
+homepage_name: loki
+app_description: Grafana Loki is a set of components that can be composed into a fully featured logging stack.
+

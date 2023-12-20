@@ -1,0 +1,2 @@
+traefik_svc_port: "80"
+app_description: Duc is a collection of tools for inspecting and visualizing disk usage

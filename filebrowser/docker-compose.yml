@@ -2,6 +2,7 @@ version: '3.7'
 services:
   filebrowser:
     image: filebrowser/filebrowser:v2.19.0
+    restart: unless-stopped
       #user: '1000:1000'
     command:
       - --root
