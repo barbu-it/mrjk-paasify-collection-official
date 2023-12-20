@@ -1,0 +1,39 @@
+version: "3.8"
+
+networks:
+  ldap:
+    name: ${net_ldap:-${app_network_name:-ldap}}
+
+services:
+  lldap:
+    image: lldap/lldap:stable
+    restart: unless-stopped
+    ports: []
+      # For LDAP
+      #- "3890:3890"
+      # For LDAPS (LDAP Over SSL), enable port if LLDAP_LDAPS_OPTIONS__ENABLED set true, look env below
+      #- "6360:6360"
+      # For the web front-end
+      #- "17170:17170"
+
+    networks:
+      ldap:
+        aliases:
+          - ldap
+    environment:
+      - UID=$app_puid
+      - GID=$app_pgid
+      - TZ=$app_tz
+      - LLDAP_JWT_SECRET=${app_token_jwt:-had9kacAloddOvnapAjhyec2AirdgreycsEv11}
+      - LLDAP_LDAP_USER_PASS=$app_admin_pass
+      - LLDAP_LDAP_BASE_DN=${ldap_base_dn}
+#     - LLDAP_LDAP_BASE_DN=dc=example,dc=com
+      # If using LDAPS, set enabled true and configure cert and key path
+      # - LLDAP_LDAPS_OPTIONS__ENABLED=true
+      # - LLDAP_LDAPS_OPTIONS__CERT_FILE=/path/to/certfile.crt
+      # - LLDAP_LDAPS_OPTIONS__KEY_FILE=/path/to/keyfile.key
+      # You can also set a different database:
+      # - LLDAP_DATABASE_URL=mysql://mysql-user:password@mysql-server/my-database
+      # - LLDAP_DATABASE_URL=postgres://postgres-user:password@postgres-server/my-database
+    volumes:
+      - $app_dir_data:/data

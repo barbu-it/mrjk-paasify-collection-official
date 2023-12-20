@@ -1,0 +1,20 @@
+version: '3.7'
+
+networks:
+  default:
+  #agent_network:
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    restart: unless-stopped
+    command: --http-enabled
+    environment:
+      - TZ=$app_tz
+    volumes:
+      - $app_dir_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      default:
+      #agent_network:
+

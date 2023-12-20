@@ -1,0 +1,18 @@
+version: '3'
+
+services: 
+  mkdocs:
+    image: ghcr.io/peaceiris/mkdocs-material:latest
+      #image: paasify-doc:latest
+    stdin_open: true
+    tty: true
+    command:
+      - "mkdocs"
+      - "serve"
+      - "--dev-addr=0.0.0.0:8042"
+      - "--config-file"
+      - "./mkdocs.yml"
+    working_dir: /data
+    volumes:
+      - $app_dir_data:/data/
+

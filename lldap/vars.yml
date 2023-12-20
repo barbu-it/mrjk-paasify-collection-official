@@ -1,0 +1,5 @@
+app_port: 17170
+  #traefik_svc_port: 8080
+
+
+app_description: Light LDAP implementation for authentication
