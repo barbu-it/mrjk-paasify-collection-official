@@ -1,0 +1,18 @@
+version: '3.7'
+
+networks:
+  default:
+  #agent_network:
+
+services:
+  portier:
+    image: portier/broker:latest
+    restart: unless-stopped
+    environment:
+      - TZ=$app_tz
+    volumes:
+      - $app_dir_data:/data
+    networks:
+      default:
+      #agent_network:
+

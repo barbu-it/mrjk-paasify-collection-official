@@ -1,0 +1,2 @@
+app_description: A web interface to manage docker
+traefik_svc_port: "9000"

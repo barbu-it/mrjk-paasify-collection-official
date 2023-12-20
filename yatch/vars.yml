@@ -1,0 +1,2 @@
+app_description: "A web interface for managing docker containers with an emphasis on templating to provide one-click deployments of dockerized applications"
+traefik_svc_port: "8000"

@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+ yatch:
+    image: selfhostedpro/yacht
+    restart: unless-stopped
+    environment:
+      - TZ=$app_tz
+    volumes:
+      - $app_dir_conf:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+
